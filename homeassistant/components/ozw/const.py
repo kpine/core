@@ -62,3 +62,13 @@ DISC_PRIMARY = "primary"
 DISC_SPECIFIC_DEVICE_CLASS = "specific_device_class"
 DISC_TYPE = "type"
 DISC_VALUES = "values"
+DISC_MFG_SPECIFIC = "mfg_specific"
+
+# Manufacturers
+GE_JASCO = 0x0063
+
+# Product Types
+GE_DIMMER = 0x4944
+
+# Products
+GE_FAN_CONTROLLER_12730 = (GE_JASCO, GE_DIMMER, 0x3034, 1)

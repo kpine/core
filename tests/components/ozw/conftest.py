@@ -124,6 +124,17 @@ async def fan_msg_fixture(hass):
     return message
 
 
+@pytest.fixture(name="fan_ge12730_msg")
+async def fan_ge12730_msg_fixture(hass):
+    """Return a mock MQTT msg with a GE 12730 fan actuator message."""
+    fan_json = json.loads(
+        await hass.async_add_executor_job(load_fixture, "ozw/fan_ge12730.json")
+    )
+    message = MQTTMessage(topic=fan_json["topic"], payload=fan_json["payload"])
+    message.encode()
+    return message
+
+
 @pytest.fixture(name="light_msg")
 async def light_msg_fixture(hass):
     """Return a mock MQTT msg with a light actuator message."""

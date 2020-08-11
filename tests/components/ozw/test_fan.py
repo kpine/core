@@ -135,10 +135,13 @@ async def test_fan(hass, fan_data, fan_msg, sent_messages, caplog):
     assert "Invalid speed received: invalid" in caplog.text
 
 
-async def test_fan_ge12724(hass, ge12724_fan_data, fan_msg, sent_messages, caplog):
+async def test_fan_ge12724(
+    hass, ge12724_fan_data, fan_ge12730_msg, sent_messages, caplog
+):
     """Test fan."""
     receive_message = await setup_ozw(hass, fixture=ge12724_fan_data)
 
+    fan_msg = fan_ge12730_msg
     # Test loaded
 
     # Entity is a fan, not a light
