@@ -4,9 +4,9 @@ from homeassistant.components.ozw.fan import SPEED_TO_VALUE
 from .common import setup_ozw
 
 
-async def test_fan(hass, fan_data, fan_msg, sent_messages, caplog):
+async def test_fan(hass, fan_ge14287_data, fan_ge14287_msg, sent_messages, caplog):
     """Test fan."""
-    receive_message = await setup_ozw(hass, fixture=fan_data)
+    receive_message = await setup_ozw(hass, fixture=fan_ge14287_data)
 
     # Test loaded
     state = hass.states.get("fan.in_wall_smart_fan_control_level")
@@ -25,6 +25,8 @@ async def test_fan(hass, fan_data, fan_msg, sent_messages, caplog):
     msg = sent_messages[-1]
     assert msg["topic"] == "OpenZWave/1/command/setvalue/"
     assert msg["payload"] == {"Value": 0, "ValueIDKey": 172589073}
+
+    fan_msg = fan_ge14287_msg
 
     # Feedback on state
     fan_msg.decode()
@@ -141,7 +143,6 @@ async def test_fan_ge12724(
     """Test fan."""
     receive_message = await setup_ozw(hass, fixture=ge12724_fan_data)
 
-    fan_msg = fan_ge12730_msg
     # Test loaded
 
     # Entity is a fan, not a light
@@ -164,6 +165,8 @@ async def test_fan_ge12724(
     msg = sent_messages[-1]
     assert msg["topic"] == "OpenZWave/1/command/setvalue/"
     assert msg["payload"] == {"Value": 0, "ValueIDKey": 407470097}
+
+    fan_msg = fan_ge12730_msg
 
     # Feedback on state
     fan_msg.decode()
