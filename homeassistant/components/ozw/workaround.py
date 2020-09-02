@@ -50,12 +50,16 @@ DEVICE_COMPONENT_MAPPING = {
 
 def get_device_component_mapping(value):
     """Get mapping of value to another component."""
-    if not value.node.manufacturer_id.strip() or not value.node.product_type.strip():
+    if (
+        not value.node.node_manufacturer_id.strip()
+        or not value.node.node_product_type.strip()
+        or not value.node.node_product_id.strip()
+    ):
         return None
 
-    manufacturer_id = int(value.node_manufacturer_name, 16)
-    product_type = int(value.node_product_type, 16)
-    product_id = int(value.node_product_id, 16)
+    manufacturer_id = int(value.node.node_manufacturer_id, 16)
+    product_type = int(value.node.node_product_type, 16)
+    product_id = int(value.node.node_product_id, 16)
 
     return DEVICE_COMPONENT_MAPPING.get(
         (
