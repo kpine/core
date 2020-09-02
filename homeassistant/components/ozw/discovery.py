@@ -217,17 +217,6 @@ DISCOVERY_SCHEMAS = (
             },
         },
     },
-    {  # Fan
-        const.DISC_COMPONENT: "fan",
-        const.DISC_VALUES: {
-            const.DISC_PRIMARY: {
-                const.DISC_COMMAND_CLASS: CommandClass.SWITCH_MULTILEVEL,
-                const.DISC_INDEX: ValueIndex.SWITCH_MULTILEVEL_LEVEL,
-                const.DISC_TYPE: ValueType.BYTE,
-                const.DISC_MFG_SPECIFIC: (const.GE_FAN_CONTROLLER_12730,),
-            },
-        },
-    },
     {  # Light
         const.DISC_COMPONENT: "light",
         const.DISC_GENERIC_DEVICE_CLASS: (
@@ -356,18 +345,6 @@ def check_value_schema(value, schema):
         value.instance, schema[const.DISC_INSTANCE]
     ):
         return False
-    if const.DISC_MFG_SPECIFIC in schema:
-        node = value.node
-        if not eq_or_in(
-            (
-                int(node.node_manufacturer_id, 16),
-                int(node.node_product_type, 16),
-                int(node.node_product_id, 16),
-                value.instance,
-            ),
-            schema[const.DISC_MFG_SPECIFIC],
-        ):
-            return False
 
     return True
 

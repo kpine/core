@@ -163,8 +163,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
             # the list can be safely iterated over in the main thread
             data_values[node_id] = node_data_values + [values]
 
-        print("###########################")
-
     @callback
     def async_value_changed(value):
         # if an entity belonging to this value needs updating,
