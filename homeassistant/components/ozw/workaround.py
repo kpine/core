@@ -8,7 +8,7 @@ class Manufacturer(IntEnum):
     """Manufacturer IDs."""
 
     GE_JASCO = 0x0063
-    INOVELLI1 = 0x031E
+    INOVELLI = 0x031E
     LEVITON = 0x001D
 
 
@@ -22,7 +22,7 @@ GE_FAN_CONTROLLER_14287_MULTILEVEL = (
 )
 
 INOVELLI_LZW36_FAN_LIGHT_MULTILEVEL = (
-    Manufacturer.INOVELLI1,
+    Manufacturer.INOVELLI,
     0x000E,
     0x0001,
     3,
@@ -40,7 +40,6 @@ LEVITON_VRF01_1LZ_MULTILEVEL = (
 )
 
 
-# List of component workarounds
 DEVICE_COMPONENT_MAPPING = {
     GE_FAN_CONTROLLER_14287_MULTILEVEL: "fan",
     INOVELLI_LZW36_FAN_LIGHT_MULTILEVEL: "fan",
