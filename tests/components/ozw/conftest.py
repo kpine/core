@@ -15,10 +15,10 @@ def generic_data_fixture():
     return load_fixture("ozw/generic_network_dump.csv")
 
 
-@pytest.fixture(name="fan_ge14287_data", scope="session")
-def fan_ge14287_data_fixture():
+@pytest.fixture(name="fan_data", scope="session")
+def fan_data_fixture():
     """Load fan MQTT data and return it."""
-    return load_fixture("ozw/fan_ge14287_network_dump.csv")
+    return load_fixture("ozw/fan_network_dump.csv")
 
 
 @pytest.fixture(name="ge12724_fan_data", scope="session")
@@ -125,22 +125,11 @@ def sent_messages_fixture():
         yield sent_messages
 
 
-@pytest.fixture(name="fan_ge14287_msg")
+@pytest.fixture(name="fan_msg")
 async def fan_msg_fixture(hass):
     """Return a mock MQTT msg with a fan actuator message."""
     fan_json = json.loads(
-        await hass.async_add_executor_job(load_fixture, "ozw/fan_ge14287.json")
-    )
-    message = MQTTMessage(topic=fan_json["topic"], payload=fan_json["payload"])
-    message.encode()
-    return message
-
-
-@pytest.fixture(name="fan_ge12730_msg")
-async def fan_ge12730_msg_fixture(hass):
-    """Return a mock MQTT msg with a GE 12730 fan actuator message."""
-    fan_json = json.loads(
-        await hass.async_add_executor_job(load_fixture, "ozw/fan_ge12730.json")
+        await hass.async_add_executor_job(load_fixture, "ozw/fan.json")
     )
     message = MQTTMessage(topic=fan_json["topic"], payload=fan_json["payload"])
     message.encode()
