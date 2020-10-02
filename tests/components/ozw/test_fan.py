@@ -149,3 +149,17 @@ async def test_fan_ge_12724_workaround(hass, ge12724_fan_data):
 
     state = hass.states.get("fan.in_wall_smart_fan_control_level")
     assert state is not None
+
+
+async def test_fan_leviton_vfr01_1lz_workaround(hass, fan_leviton_vfr01_1lz_data):
+    """Test GE 12724 fan workaround."""
+    await setup_ozw(hass, fixture=fan_leviton_vfr01_1lz_data)
+
+    # Test loaded
+
+    # Entity is a fan, not a light
+    state = hass.states.get("light.living_room_fan_level")
+    assert state is None
+
+    state = hass.states.get("fan.living_room_fan_level")
+    assert state is not None
