@@ -1,4 +1,4 @@
-"""Test Z-Wave Lights."""
+"""Test Z-Wave Fans."""
 from homeassistant.components.ozw.fan import SPEED_TO_VALUE
 
 from .common import setup_ozw

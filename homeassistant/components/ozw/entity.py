@@ -20,7 +20,7 @@ from homeassistant.helpers.dispatcher import (
 )
 from homeassistant.helpers.entity import Entity
 
-from . import const
+from . import const, workaround
 from .const import DOMAIN, PLATFORMS
 from .discovery import check_node_schema, check_value_schema
 
@@ -119,6 +119,15 @@ class ZWaveDeviceEntityValues:
 
         # We have all the required values, so create the entity.
         component = self._schema[const.DISC_COMPONENT]
+
+        workaround_component = workaround.get_value_component_mapping(self.primary)
+        if workaround_component and workaround_component != component:
+            _LOGGER.debug(
+                "Component workaround detected, using %s instead of %s",
+                workaround_component,
+                component,
+            )
+            component = workaround_component
 
         _LOGGER.debug(
             "Adding Node_id=%s Generic_command_class=%s, "

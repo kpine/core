@@ -22,6 +22,24 @@ def fan_data_fixture():
     return load_fixture("ozw/fan_network_dump.csv")
 
 
+@pytest.fixture(name="fan_ge12730_data", scope="session")
+def fan_ge12730_data_fixture():
+    """Load GE 12730 fan MQTT data and return it."""
+    return load_fixture("ozw/ge12730_fan_network_dump.csv")
+
+
+@pytest.fixture(name="fan_leviton_vfr01_1lz_data", scope="session")
+def fan_leviton_vfr01_1lz_data_fixture():
+    """Load Leviton VFR01-1LZ fan MQTT data and return it."""
+    return load_fixture("ozw/leviton_vfr01_1lz_fan_network_dump.csv")
+
+
+@pytest.fixture(name="fan_lzw36_data", scope="session")
+def fan_lzw36_data_fixture():
+    """Load Inovelli LZW36 fan/light MQTT data and return it."""
+    return load_fixture("ozw/lzw36_fan_network_dump.csv")
+
+
 @pytest.fixture(name="light_data", scope="session")
 def light_data_fixture():
     """Load light dimmer MQTT data and return it."""
