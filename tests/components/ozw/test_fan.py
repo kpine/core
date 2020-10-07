@@ -1,4 +1,4 @@
-"""Test Z-Wave Lights."""
+"""Test Z-Wave Fans."""
 from homeassistant.components.ozw.fan import SPEED_TO_VALUE
 
 from .common import setup_ozw
@@ -133,52 +133,3 @@ async def test_fan(hass, fan_data, fan_msg, sent_messages, caplog):
 
     assert len(sent_messages) == 4
     assert "Invalid speed received: invalid" in caplog.text
-
-
-async def test_fan_ge_12724_workaround(hass, ge12724_fan_data):
-    """Test GE 12724 fan workaround."""
-    await setup_ozw(hass, fixture=ge12724_fan_data)
-
-    # Test loaded
-
-    # Entity is a fan, not a light
-    state = hass.states.get("light.in_wall_smart_fan_control_level")
-    assert state is None
-
-    state = hass.states.get("fan.in_wall_smart_fan_control_level")
-    assert state is not None
-
-
-async def test_fan_leviton_vfr01_1lz_workaround(hass, fan_leviton_vfr01_1lz_data):
-    """Test GE 12724 fan workaround."""
-    await setup_ozw(hass, fixture=fan_leviton_vfr01_1lz_data)
-
-    # Test loaded
-
-    # Entity is a fan, not a light
-    state = hass.states.get("light.living_room_fan_level")
-    assert state is None
-
-    state = hass.states.get("fan.living_room_fan_level")
-    assert state is not None
-
-
-async def test_fan_inovelli_lzw36_workaround(hass, fan_lzw36_data):
-    """Test GE 12724 fan workaround."""
-    await setup_ozw(hass, fixture=fan_lzw36_data)
-
-    # Test loaded
-
-    # This device has 3 endpoints/instances:
-    #  1. Root device
-    #  2. Light dimmer
-    #  3. Fan controller
-
-    state = hass.states.get("light.kids_room_switch_instance_1_level")
-    assert state is not None
-
-    state = hass.states.get("light.kids_room_switch_instance_2_level")
-    assert state is not None
-
-    state = hass.states.get("fan.kids_room_switch_instance_3_level")
-    assert state is not None
