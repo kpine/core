@@ -175,12 +175,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
             value.value_id_key,
             value.command_class,
         )
-        # Handle a scene activation message
-        if value.command_class in [
-            CommandClass.SCENE_ACTIVATION,
-            CommandClass.CENTRAL_SCENE,
-        ]:
+
+        # Handle scene messages
+        if value.command_class == CommandClass.SCENE_ACTIVATION:
             async_handle_scene_activated(hass, value)
+            return
+        elif value.command_class == CommandClass.CENTRAL_SCENE:
+            async_handle_central_scene_activated(hass, value)
             return
 
     @callback
@@ -312,28 +313,45 @@ async def async_handle_node_update(hass: HomeAssistant, node: OZWNode):
 
 @callback
 def async_handle_scene_activated(hass: HomeAssistant, scene_value: OZWValue):
-    """Handle a (central) scene activation message."""
+    """Handle a scene activation value."""
+    if scene_value.index != 0:
+        # not the scene id value
+        return
+
+    node_id = scene_value.node.id
+    scene_id = scene_value.value
+
+    _LOGGER.debug("[SCENE ACTIVATED] node_id: %s - scene_id: %s", node_id, scene_id)
+
+    hass.bus.async_fire(
+        const.EVENT_SCENE_ACTIVATED,
+        {
+            const.ATTR_NODE_ID: node_id,
+            const.ATTR_SCENE_ID: scene_id,
+        },
+    )
+
+
+@callback
+def async_handle_central_scene_activated(hass: HomeAssistant, scene_value: OZWValue):
+    """Handle a central scene value."""
+    if scene_value.type != ValueType.LIST:
+        # not an expected value
+        return
+
     node_id = scene_value.node.id
     scene_id = scene_value.index
     scene_label = scene_value.label
-    if scene_value.command_class == CommandClass.SCENE_ACTIVATION:
-        # legacy/network scene
-        scene_value_id = scene_value.value
-        scene_value_label = scene_value.label
-    else:
-        # central scene command
-        if scene_value.type != ValueType.LIST:
-            return
-        scene_value_label = scene_value.value["Selected"]
-        scene_value_id = scene_value.value["Selected_id"]
+    scene_value_label = scene_value.value["Selected"]
+    scene_value_id = scene_value.value["Selected_id"]
 
     _LOGGER.debug(
-        "[SCENE_ACTIVATED] node_id: %s - scene_id: %s - scene_value_id: %s",
+        "[CENTRAL SCENE ACTIVATED] node_id: %s - scene_id: %s - scene_value_id: %s",
         node_id,
         scene_id,
         scene_value_id,
     )
-    # Simply forward it to the hass event bus
+
     hass.bus.async_fire(
         const.EVENT_SCENE_ACTIVATED,
         {

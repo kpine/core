@@ -41,7 +41,8 @@ async def test_scenes(hass, generic_data, sent_messages):
     # wait for the event
     await hass.async_block_till_done()
     assert len(events) == 1
-    assert events[0].data["scene_value_id"] == 16
+    assert events[0].data["node_id"] == 39
+    assert events[0].data["scene_id"] == 16
 
     # Publish fake central scene event on mqtt
     message = MQTTMessage(
@@ -83,6 +84,8 @@ async def test_scenes(hass, generic_data, sent_messages):
     # wait for the event
     await hass.async_block_till_done()
     assert len(events) == 2
+    assert events[1].data["node_id"] == 39
     assert events[1].data["scene_id"] == 1
     assert events[1].data["scene_label"] == "Scene 1"
+    assert events[1].data["scene_value_id"] == 1
     assert events[1].data["scene_value_label"] == "Pressed 1 Time"
